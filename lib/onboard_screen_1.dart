@@ -241,9 +241,13 @@ class OnboardScreen1 extends StatelessWidget {
                         
                              Container(
                                height:246,
-                                 width:double.infinity,
+                                 width:314,
                                  decoration:BoxDecoration(
-                            color:Colors.red,
+                                   border: Border.all(
+                                     color: Color(0xFFD5C7FF),
+
+                                     width: 1,
+                                   ),
                         borderRadius:BorderRadius.circular(10)
                         ),
                                  child: Image(image: AssetImage('assets/Frame 91.png'),)),
