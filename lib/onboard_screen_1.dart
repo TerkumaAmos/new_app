@@ -20,7 +20,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
 
   naviagateUser() {
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 60),
           () {
         Navigator.push(
           context,

@@ -15,6 +15,7 @@ class OnboardScreen3 extends StatelessWidget {
              SizedBox(height: 20),
              SafeArea(child:Row(
                children: [
+                 Padding(padding: EdgeInsets.only(left: 20)),
                  Image(image: AssetImage('assets/Group 130.png',),),
                  Container(
                    height: 43,
