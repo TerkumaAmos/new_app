@@ -39,14 +39,138 @@ class OnboardScreen1 extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: 20),
-                  height: 43,
-                  width: 44,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF7750EC),
-                    borderRadius: BorderRadius.circular(10),
+                SizedBox(width: 80,height: 50,),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                      Color(0xFF7750EC,
+                      ),
+
+                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10,),),
                   ),
+                  onPressed: (){
+                 showModalBottomSheet(
+
+                     // isScrollControlled: true,
+
+                     context: context,
+                     builder: (context){
+                       return Container(
+                         width: double.infinity, // Full width
+                       // padding: const EdgeInsets.all( 16.0), // Consistent padding
+                         decoration: const BoxDecoration(
+                           color: Colors.white, // Matches app theme
+                           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                         ),
+                         child: SingleChildScrollView(
+                           child: Column(
+                           mainAxisSize: MainAxisSize.min,
+                           
+                             children: [
+                               SizedBox(height: 10),
+
+                               SvgPicture.asset("assets/Vector 9.svg"),
+                               SizedBox(height: 10),
+                               Container(
+                                 height: 43,
+                                 width: 152,
+                                 decoration: BoxDecoration(
+                                   borderRadius: BorderRadius.circular(20),
+                                   color: Color(0xFF7047EB),
+                                 ),
+                                 child: Center(child: Text('Your Notifications')),
+                               ),
+                               Container(
+
+                                 padding: EdgeInsets.only(left: 20),
+                                 alignment: Alignment.centerLeft,
+                                   child: Text('New',),),
+                               SizedBox(height: 10),
+
+                               Column(
+                                 children: [
+                                   Container(
+                                     padding: EdgeInsets.only(left:60),
+                                    alignment:Alignment.bottomLeft,
+                                       child: Text('10 minutes ago',),),
+                                 ],
+                               ),
+                               SizedBox(height: 10),
+                               Row(
+                                 children: [
+                                   Container(
+                               padding: EdgeInsets.only(left: 20),
+
+
+                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
+                                   SizedBox(width: 20),
+
+                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                                 ],
+                                 
+                               ),
+                               SizedBox(height: 30),
+                               Container(
+                                   alignment:Alignment.bottomLeft,
+                                   padding: EdgeInsets.only(left: 20),
+                                   child: Text('Earlier'),),SizedBox(height: 10),
+
+                               Column(
+                                 children: [
+                                   Container(
+                                     padding: EdgeInsets.only(left:60),
+                                     alignment:Alignment.bottomLeft,
+                                     child: Text('1 Day ago',),),
+                                 ],
+                               ),
+                               SizedBox(height: 10),
+                               Row(
+                                 children: [
+                                   Container(
+                                       padding: EdgeInsets.only(left: 20),
+
+
+                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
+                                   SizedBox(width: 20),
+
+                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                                 ],
+
+                               ),
+                               SizedBox(height: 30),
+
+                               Column(
+                                 children: [
+                                   Container(
+                                     padding: EdgeInsets.only(left:60),
+                                     alignment:Alignment.bottomLeft,
+                                     child: Text('2 Days ago',),),
+                                 ],
+                               ),
+                               Row(
+                                 children: [
+                                   Container(
+
+                                       padding: EdgeInsets.only(left: 20),
+                                     decoration: BoxDecoration(
+
+                                     ),
+
+                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
+                                   SizedBox(width: 20),
+
+                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
+                                 ],
+
+                               ),
+                            ],
+
+                           ),
+                         ),
+                       );
+                     }
+                 );
+                  },
                   child: const Icon(
                     Icons.notifications,
                     color: Colors.white,
@@ -60,7 +184,7 @@ class OnboardScreen1 extends StatelessWidget {
               width: 321,
               decoration: BoxDecoration(
                   color: Color(0xFF7750EC),
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10,),),
               child: const Column(
                 children: [
                   Row(
@@ -69,10 +193,9 @@ class OnboardScreen1 extends StatelessWidget {
                         padding: EdgeInsets.only(left: 70.0, top: 10),
                         child: Image(
                           image: AssetImage(
-                            "assets/vector (3).png",
+                            "assets/Vector (3).png",
                           ),
-                          width: 90,
-                          height: 50,
+
                         ),
                       ),
                       SizedBox(
@@ -159,6 +282,8 @@ class OnboardScreen1 extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(height: 10,
+                            ),
                             SvgPicture.asset("assets/Vector 9.svg"),
                             SizedBox(
                               height: 10,
