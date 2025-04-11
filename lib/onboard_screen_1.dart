@@ -1,10 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class OnboardScreen1 extends StatelessWidget {
+import 'onboard_screen_3.dart';
+
+class OnboardScreen1 extends StatefulWidget {
   const OnboardScreen1({super.key});
 
   @override
+  State<OnboardScreen1> createState() => _OnboardScreen1State();
+}
+
+class _OnboardScreen1State extends State<OnboardScreen1> {
+  @override
+
+  void initState() {
+    naviagateUser();
+    super.initState();
+  }
+
+  naviagateUser() {
+    Future.delayed(
+      const Duration(seconds: 3),
+          () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OnboardScreen3(),
+          ),
+        );
+      },
+    );
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF7047EB),
@@ -65,7 +91,7 @@ class OnboardScreen1 extends StatelessWidget {
                          child: SingleChildScrollView(
                            child: Column(
                            mainAxisSize: MainAxisSize.min,
-                           
+
                              children: [
                                SizedBox(height: 10),
 
@@ -81,7 +107,6 @@ class OnboardScreen1 extends StatelessWidget {
                                  child: Center(child: Text('Your Notifications')),
                                ),
                                Container(
-
                                  padding: EdgeInsets.only(left: 20),
                                  alignment: Alignment.centerLeft,
                                    child: Text('New',),),
@@ -107,7 +132,7 @@ class OnboardScreen1 extends StatelessWidget {
 
                                    Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
                                  ],
-                                 
+
                                ),
                                SizedBox(height: 30),
                                Container(
@@ -248,8 +273,11 @@ class OnboardScreen1 extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    children: [],
-                  )
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Lagos, Nigeria. 2:00 p.m',style: TextStyle(fontSize: 16,color: Colors.white),)
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -290,7 +318,7 @@ class OnboardScreen1 extends StatelessWidget {
                             ),
                             Row(
                               // mainAxisAlignment: MainAxisAlignment.center,
-                        
+
                               children: [
                                 Container(
                                   margin: EdgeInsets.only(left: 120),
@@ -324,7 +352,7 @@ class OnboardScreen1 extends StatelessWidget {
                             ),
                             SizedBox(height: 10),
                             Container(
-                        
+
                               decoration: BoxDecoration(
                                 borderRadius:BorderRadius.circular(10),
                                 border: Border.all(
@@ -341,15 +369,15 @@ class OnboardScreen1 extends StatelessWidget {
                                 ),
                             ),
                             SizedBox(height: 10),
-                        
+
                             Row(
-                        
+
                               children: [
                               Container(
                                 padding:EdgeInsets.only(left:40),
                                   child: Text('Next forecast',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),)),
                                 SizedBox(width: 100),
-                        
+
                                 Container(
                                decoration: BoxDecoration(
                                  borderRadius:BorderRadius.circular(10),
@@ -359,11 +387,11 @@ class OnboardScreen1 extends StatelessWidget {
                                width: 100,
                                child: Center(child: Text('Five Days',style: TextStyle(color: Colors.white,),),),
                              ),
-                        
+
                             ],
                             ),
                             SizedBox(height: 10),
-                        
+
                              Container(
                                height:246,
                                  width:314,
@@ -377,9 +405,9 @@ class OnboardScreen1 extends StatelessWidget {
                         ),
                                  child: Image(image: AssetImage('assets/Frame 91.png'),)),
                             SizedBox(height: 10),
-                        
+
                           ],
-                        
+
                         ),
                       );
                     },
