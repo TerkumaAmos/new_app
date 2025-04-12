@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'onboard_screen_3.dart';
 
@@ -11,26 +12,34 @@ class OnboardScreen1 extends StatefulWidget {
 }
 
 class _OnboardScreen1State extends State<OnboardScreen1> {
+
+  void getLocation()async{
+    Position position=await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    print(position);
+  }
+
+
+
   @override
 
-  void initState() {
-    naviagateUser();
-    super.initState();
-  }
-
-  naviagateUser() {
-    Future.delayed(
-      const Duration(seconds: 3),
-          () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OnboardScreen3(),
-          ),
-        );
-      },
-    );
-  }
+  // void initState() {
+  //   naviagateUser();
+  //   super.initState();
+  // }
+  //
+  // naviagateUser() {
+  //   Future.delayed(
+  //     const Duration(seconds: 3),
+  //         () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => OnboardScreen3(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF7047EB),
@@ -49,17 +58,23 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                     color: Color(0xFF7750EC),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Row(
+                  child:  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Icon(
                         Icons.location_on,
                         color: Colors.white,
                       ),
-                      Text(
-                        'Lagos, Nigeria',
-                        style: TextStyle(
-                          color: Colors.white,
+                      ElevatedButton(
+                        onPressed: (){
+                          getLocation();
+
+                        },
+                        child: Text(
+                          'Lagos, Nigeria',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],

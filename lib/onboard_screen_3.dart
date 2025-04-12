@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import 'onboard_screen_1.dart';
 
@@ -34,7 +35,11 @@ class OnboardScreen3 extends StatelessWidget {
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
                        Icon(Icons.location_on,color: Colors.white,),
-                       Text('Abuja, Nigeria',style: TextStyle(color: Colors.white),),
+                       GestureDetector(
+                         onTap: (){
+
+                         },
+                           child: Text('Abuja, Nigeria',style: TextStyle(color: Colors.white),)),
                      ],
 
                    ),
