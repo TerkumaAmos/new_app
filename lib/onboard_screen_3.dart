@@ -16,7 +16,12 @@ class OnboardScreen3 extends StatelessWidget {
              SafeArea(child:Row(
                children: [
                  Padding(padding: EdgeInsets.only(left: 20)),
-                 Image(image: AssetImage('assets/Group 130.png',),),
+                 GestureDetector(
+                     onTap: (){
+                       Navigator.pushReplacement(context, MaterialPageRoute(
+                           builder: (context) => const OnboardScreen1()),);
+                     },
+                     child: Image(image: AssetImage('assets/Group 130.png',),)),
                  Container(
                    height: 43,
                    width: 159,
@@ -28,12 +33,7 @@ class OnboardScreen3 extends StatelessWidget {
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
-                       GestureDetector(
-                         onTap: (){
-                           Navigator.pushReplacement(context, MaterialPageRoute(
-                           builder: (context) => const OnboardScreen1()),);
-                 },
-                           child: Icon(Icons.location_on,color: Colors.white,)),
+                       Icon(Icons.location_on,color: Colors.white,),
                        Text('Abuja, Nigeria',style: TextStyle(color: Colors.white),),
                      ],
 
@@ -112,10 +112,14 @@ class OnboardScreen3 extends StatelessWidget {
                        ),
                      ],
                    ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Lagos, Nigeria. 2:00 p.m',style: TextStyle(fontSize: 16,color: Colors.white),)
+               Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Text('Abuja, Nigeria. 2:00 p.m',
+               style: TextStyle(fontSize: 16,
+                    color: Colors.white,
+            ),
+          ),
         ],
       ),
                  ],
