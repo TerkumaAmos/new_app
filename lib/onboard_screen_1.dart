@@ -13,33 +13,33 @@ class OnboardScreen1 extends StatefulWidget {
 
 class _OnboardScreen1State extends State<OnboardScreen1> {
 
-  void getLocation()async{
-    Position position=await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    print(position);
-  }
+  // void getLocation()async{
+  //   Position position=await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+  //   print(position);
+  // }
 
 
 
   @override
 
-  // void initState() {
-  //   naviagateUser();
-  //   super.initState();
-  // }
-  //
-  // naviagateUser() {
-  //   Future.delayed(
-  //     const Duration(seconds: 3),
-  //         () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => OnboardScreen3(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  void initState() {
+    naviagateUser();
+    super.initState();
+  }
+
+  naviagateUser() {
+    Future.delayed(
+      const Duration(seconds: 3),
+          () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OnboardScreen3(),
+          ),
+        );
+      },
+    );
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF7047EB),
@@ -53,7 +53,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                 Container(
                   height: 43,
                   width: 159,
-                  margin: EdgeInsets.only(left: 20),
+                  margin: EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     color: Color(0xFF7750EC),
                     borderRadius: BorderRadius.circular(20),
@@ -65,16 +65,10 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                         Icons.location_on,
                         color: Colors.white,
                       ),
-                      ElevatedButton(
-                        onPressed: (){
-                          getLocation();
-
-                        },
-                        child: Text(
-                          'Lagos, Nigeria',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                      Text(
+                        'Lagos, Nigeria',
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
                       ),
                     ],
