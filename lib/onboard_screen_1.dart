@@ -1,3 +1,5 @@
+import 'dart:developer';
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,34 +14,83 @@ class OnboardScreen1 extends StatefulWidget {
 }
 
 class _OnboardScreen1State extends State<OnboardScreen1> {
+  void getLocation() async {
+    Future getCurrentLocation() async {
+      bool serviceEnabled;
+      LocationPermission permission;
 
-  // void getLocation()async{
-  //   Position position=await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-  //   print(position);
-  // }
+// Check if location services are enabled.
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+// Open location settings if services are disabled.
+        await Geolocator.openLocationSettings();
+        return Future.error('Location services are disabled.');
+      }
 
+// Check current location permissions.
+      permission = await Geolocator.checkPermission();
 
+// If permissions are already granted, proceed to fetch location.
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse) {
+        final location = await Geolocator.getCurrentPosition();
+
+        log("Location($location)");
+      }
+
+// If permissions are denied, request them.
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+// Permissions are denied, open settings and return an error.
+          await Geolocator.openLocationSettings();
+          return Future.error('Location permissions are denied.');
+        }
+      }
+
+// If permissions are permanently denied, return an error.
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+          'Location permissions are permanently denied. Please enable them in the app settings.',
+        );
+      }
+
+// When we reach here, permissions are granted, and we can fetch the location.
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    log("position($position)");
+    fetchWeatherData(lat: position.latitude, long: position.longitude);
+  }
+
+  fetchWeatherData({lat, long}) async {
+    // https:api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
+    final response = await get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=a1f9fbb35063e8d2a9a3e552ef80269b'));
+    log('response($response)');
+  }
 
   @override
 
-  void initState() {
-    naviagateUser();
-    super.initState();
-  }
-
-  naviagateUser() {
-    Future.delayed(
-      const Duration(seconds: 3),
-          () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OnboardScreen3(),
-          ),
-        );
-      },
-    );
-  }
+  // void initState() {
+  //   naviagateUser();
+  //   super.initState();
+  // }
+  //
+  // naviagateUser() {
+  //   Future.delayed(
+  //     const Duration(seconds: 3),
+  //         () {
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => OnboardScreen3(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF7047EB),
@@ -53,157 +104,191 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                 Container(
                   height: 43,
                   width: 159,
-                  margin: EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF7750EC),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child:  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.white,
+                  margin: EdgeInsets.only(left: 20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(
+                        0xFF77750EC,
                       ),
-                      Text(
-                        'Lagos, Nigeria',
-                        style: TextStyle(
+                    ),
+                    onPressed: () {
+                      getLocation();
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.location_on,
                           color: Colors.white,
                         ),
-                      ),
-                    ],
+                        Text(
+                          'Lagos, Nigeria',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(width: 80,height: 50,),
+                SizedBox(
+                  width: 80,
+                  height: 50,
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                      Color(0xFF7750EC,
+                    backgroundColor: Color(
+                      0xFF7750EC,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
                       ),
-
-                    shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10,),),
+                    ),
                   ),
-                  onPressed: (){
-                 showModalBottomSheet(
+                  onPressed: () {
+                    showModalBottomSheet(
 
-                     // isScrollControlled: true,
+                        // isScrollControlled: true,
 
-                     context: context,
-                     builder: (context){
-                       return Container(
-                         width: double.infinity, // Full width
-                       // padding: const EdgeInsets.all( 16.0), // Consistent padding
-                         decoration: const BoxDecoration(
-                           color: Colors.white, // Matches app theme
-                           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                         ),
-                         child: SingleChildScrollView(
-                           child: Column(
-                           mainAxisSize: MainAxisSize.min,
-
-                             children: [
-                               SizedBox(height: 10),
-
-                               SvgPicture.asset("assets/Vector 9.svg"),
-                               SizedBox(height: 10),
-                               Container(
-                                 height: 43,
-                                 width: 152,
-                                 decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(20),
-                                   color: Color(0xFF7047EB),
-                                 ),
-                                 child: Center(child: Text('Your Notifications')),
-                               ),
-                               Container(
-                                 padding: EdgeInsets.only(left: 20),
-                                 alignment: Alignment.centerLeft,
-                                   child: Text('New',),),
-                               SizedBox(height: 10),
-
-                               Column(
-                                 children: [
-                                   Container(
-                                     padding: EdgeInsets.only(left:60),
-                                    alignment:Alignment.bottomLeft,
-                                       child: Text('10 minutes ago',),),
-                                 ],
-                               ),
-                               SizedBox(height: 10),
-                               Row(
-                                 children: [
-                                   Container(
-                               padding: EdgeInsets.only(left: 20),
-
-
-                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
-                                   SizedBox(width: 20),
-
-                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
-                                 ],
-
-                               ),
-                               SizedBox(height: 30),
-                               Container(
-                                   alignment:Alignment.bottomLeft,
-                                   padding: EdgeInsets.only(left: 20),
-                                   child: Text('Earlier'),),SizedBox(height: 10),
-
-                               Column(
-                                 children: [
-                                   Container(
-                                     padding: EdgeInsets.only(left:60),
-                                     alignment:Alignment.bottomLeft,
-                                     child: Text('1 Day ago',),),
-                                 ],
-                               ),
-                               SizedBox(height: 10),
-                               Row(
-                                 children: [
-                                   Container(
-                                       padding: EdgeInsets.only(left: 20),
-
-
-                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
-                                   SizedBox(width: 20),
-
-                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
-                                 ],
-
-                               ),
-                               SizedBox(height: 30),
-
-                               Column(
-                                 children: [
-                                   Container(
-                                     padding: EdgeInsets.only(left:60),
-                                     alignment:Alignment.bottomLeft,
-                                     child: Text('2 Days ago',),),
-                                 ],
-                               ),
-                               Row(
-                                 children: [
-                                   Container(
-
-                                       padding: EdgeInsets.only(left: 20),
-                                     decoration: BoxDecoration(
-
-                                     ),
-
-                                       child: Image(image: AssetImage('assets/wb_sunny.png',),)),
-                                   SizedBox(width: 20),
-
-                                   Text('Its a sunny day in your location',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
-                                 ],
-
-                               ),
-                            ],
-
-                           ),
-                         ),
-                       );
-                     }
-                 );
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            width: double.infinity, // Full width
+                            // padding: const EdgeInsets.all( 16.0), // Consistent padding
+                            decoration: const BoxDecoration(
+                              color: Colors.white, // Matches app theme
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20)),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(height: 10),
+                                  SvgPicture.asset("assets/Vector 9.svg"),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    height: 43,
+                                    width: 152,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Color(0xFF7047EB),
+                                    ),
+                                    child: Center(
+                                        child: Text('Your Notifications')),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(left: 20),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'New',
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(left: 60),
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          '10 minutes ago',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Image(
+                                            image: AssetImage(
+                                              'assets/wb_sunny.png',
+                                            ),
+                                          )),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        'Its a sunny day in your location',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Container(
+                                    alignment: Alignment.bottomLeft,
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Text('Earlier'),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(left: 60),
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          '1 Day ago',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.only(left: 20),
+                                          child: Image(
+                                            image: AssetImage(
+                                              'assets/wb_sunny.png',
+                                            ),
+                                          )),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        'Its a sunny day in your location',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: 30),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.only(left: 60),
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text(
+                                          '2 Days ago',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                          padding: EdgeInsets.only(left: 20),
+                                          decoration: BoxDecoration(),
+                                          child: Image(
+                                            image: AssetImage(
+                                              'assets/wb_sunny.png',
+                                            ),
+                                          )),
+                                      SizedBox(width: 20),
+                                      Text(
+                                        'Its a sunny day in your location',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
                   },
                   child: const Icon(
                     Icons.notifications,
@@ -217,8 +302,11 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
               height: 348,
               width: 321,
               decoration: BoxDecoration(
-                  color: Color(0xFF7750EC),
-                  borderRadius: BorderRadius.circular(10,),),
+                color: Color(0xFF7750EC),
+                borderRadius: BorderRadius.circular(
+                  10,
+                ),
+              ),
               child: const Column(
                 children: [
                   Row(
@@ -229,7 +317,6 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                           image: AssetImage(
                             "assets/Vector (3).png",
                           ),
-
                         ),
                       ),
                       SizedBox(
@@ -284,7 +371,10 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Lagos, Nigeria. 2:00 p.m',style: TextStyle(fontSize: 16,color: Colors.white),)
+                      Text(
+                        'Lagos, Nigeria. 2:00 p.m',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      )
                     ],
                   ),
                 ],
@@ -319,7 +409,8 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(height: 10,
+                            SizedBox(
+                              height: 10,
                             ),
                             SvgPicture.asset("assets/Vector 9.svg"),
                             SizedBox(
@@ -332,8 +423,11 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                 Container(
                                   margin: EdgeInsets.only(left: 120),
                                   decoration: BoxDecoration(
-                                      color: Color(0xFF7047EB),
-                                      borderRadius: BorderRadius.circular(20,),),
+                                    color: Color(0xFF7047EB),
+                                    borderRadius: BorderRadius.circular(
+                                      20,
+                                    ),
+                                  ),
                                   height: 43,
                                   width: 152,
                                   child: const Row(
@@ -361,62 +455,65 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                             ),
                             SizedBox(height: 10),
                             Container(
-
                               decoration: BoxDecoration(
-                                borderRadius:BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
                                   color: Color(0xFFD5C7FF),
-                                    width: 2,
+                                  width: 2,
                                 ),
                               ),
-                                height: 106,
-                                width: 325,
-                                child: const Image(
-                                    image: AssetImage(
-                                      'assets/Group 91.png',
-                                    ),
+                              height: 106,
+                              width: 325,
+                              child: const Image(
+                                image: AssetImage(
+                                  'assets/Group 91.png',
                                 ),
+                              ),
                             ),
                             SizedBox(height: 10),
-
                             Row(
-
                               children: [
-                              Container(
-                                padding:EdgeInsets.only(left:40),
-                                  child: Text('Next forecast',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),)),
-                                SizedBox(width: 100),
-
                                 Container(
-                               decoration: BoxDecoration(
-                                 borderRadius:BorderRadius.circular(10),
-                                 color: Color(0xFF8862FC)
-                               ),
-                               height: 36,
-                               width: 100,
-                               child: Center(child: Text('Five Days',style: TextStyle(color: Colors.white,),),),
-                             ),
-
-                            ],
+                                    padding: EdgeInsets.only(left: 40),
+                                    child: Text(
+                                      'Next forecast',
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                SizedBox(width: 100),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Color(0xFF8862FC)),
+                                  height: 36,
+                                  width: 100,
+                                  child: Center(
+                                    child: Text(
+                                      'Five Days',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: 10),
-
-                             Container(
-                               height:246,
-                                 width:314,
-                                 decoration:BoxDecoration(
-                                   border: Border.all(
-                                     color: Color(0xFFD5C7FF),
-
-                                     width: 1,
-                                   ),
-                        borderRadius:BorderRadius.circular(10)
-                        ),
-                                 child: Image(image: AssetImage('assets/Frame 91.png'),)),
+                            Container(
+                                height: 246,
+                                width: 314,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFFD5C7FF),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Image(
+                                  image: AssetImage('assets/Frame 91.png'),
+                                )),
                             SizedBox(height: 10),
-
                           ],
-
                         ),
                       );
                     },
@@ -450,4 +547,3 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
     );
   }
 }
-
