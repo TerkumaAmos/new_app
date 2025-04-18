@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:developer';
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
@@ -66,31 +68,15 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
   fetchWeatherData({lat, long}) async {
     // https:api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
-    final response = await get(Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=a1f9fbb35063e8d2a9a3e552ef80269b'));
+    final response = await get(
+      Uri.parse(
+        'https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=a1f9fbb35063e8d2a9a3e552ef80269b',
+      ),
+    );
     log('response($response)');
   }
 
   @override
-
-  // void initState() {
-  //   naviagateUser();
-  //   super.initState();
-  // }
-  //
-  // naviagateUser() {
-  //   Future.delayed(
-  //     const Duration(seconds: 3),
-  //         () {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => OnboardScreen3(),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF7047EB),
@@ -107,14 +93,14 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                   margin: EdgeInsets.only(left: 20),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(
-                        0xFF77750EC,
+                      backgroundColor: const Color(
+                        0xff77750ec,
                       ),
                     ),
                     onPressed: () {
                       getLocation();
                     },
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Icon(
@@ -131,13 +117,13 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 80,
                   height: 50,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(
+                    backgroundColor: const Color(
                       0xFF7750EC,
                     ),
                     shape: RoundedRectangleBorder(
@@ -165,7 +151,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   SvgPicture.asset("assets/Vector 9.svg"),
                                   SizedBox(height: 10),
                                   Container(
@@ -175,40 +161,43 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                       borderRadius: BorderRadius.circular(20),
                                       color: Color(0xFF7047EB),
                                     ),
-                                    child: Center(
-                                        child: Text('Your Notifications')),
+                                    child: const Center(
+                                      child: Text('Your Notifications'),
+                                    ),
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 20),
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: const Text(
                                       'New',
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Column(
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.only(left: 60),
+                                        padding:
+                                            const EdgeInsets.only(left: 60),
                                         alignment: Alignment.bottomLeft,
-                                        child: Text(
+                                        child: const Text(
                                           '10 minutes ago',
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Row(
                                     children: [
                                       Container(
-                                          padding: EdgeInsets.only(left: 20),
-                                          child: Image(
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
+                                          child: const Image(
                                             image: AssetImage(
                                               'assets/wb_sunny.png',
                                             ),
                                           )),
                                       SizedBox(width: 20),
-                                      Text(
+                                      const Text(
                                         'Its a sunny day in your location',
                                         style: TextStyle(
                                             fontSize: 20,
@@ -228,7 +217,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                       Container(
                                         padding: EdgeInsets.only(left: 60),
                                         alignment: Alignment.bottomLeft,
-                                        child: Text(
+                                        child: const Text(
                                           '1 Day ago',
                                         ),
                                       ),
@@ -239,13 +228,13 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                     children: [
                                       Container(
                                           padding: EdgeInsets.only(left: 20),
-                                          child: Image(
+                                          child: const Image(
                                             image: AssetImage(
                                               'assets/wb_sunny.png',
                                             ),
                                           )),
                                       SizedBox(width: 20),
-                                      Text(
+                                      const Text(
                                         'Its a sunny day in your location',
                                         style: TextStyle(
                                             fontSize: 20,
@@ -259,7 +248,7 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                       Container(
                                         padding: EdgeInsets.only(left: 60),
                                         alignment: Alignment.bottomLeft,
-                                        child: Text(
+                                        child: const Text(
                                           '2 Days ago',
                                         ),
                                       ),
@@ -270,13 +259,13 @@ class _OnboardScreen1State extends State<OnboardScreen1> {
                                       Container(
                                           padding: EdgeInsets.only(left: 20),
                                           decoration: BoxDecoration(),
-                                          child: Image(
+                                          child: const Image(
                                             image: AssetImage(
                                               'assets/wb_sunny.png',
                                             ),
                                           )),
                                       SizedBox(width: 20),
-                                      Text(
+                                      const Text(
                                         'Its a sunny day in your location',
                                         style: TextStyle(
                                             fontSize: 20,
